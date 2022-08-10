@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { Search } from '@element-plus/icons-vue'
 let queryName = ref('')
 const addUser = () => {
   console.log('添加用户')
@@ -10,6 +11,13 @@ const editUser = () => {
 const deleteUser = () => {
   console.log('删除用户')
 }
+
+let multipleSelection = ref([])
+
+const handleSelectionChange = (val)=> {
+  multipleSelection.value = val
+}
+
 const tableData = ref([
   {
     date: '2016-05-03',
@@ -79,13 +87,18 @@ const tableData = ref([
     </div>
     <!-- 功能区域 -->
     <div class="fn">
-      <el-input v-model="queryName" placeholder="Please input name ..." />
+      <el-input v-model="queryName" style="width:35%" placeholder="Please input name ..." :prefix-icon="Search" />
       <el-button type="primary" @click="addUser">添加</el-button>
-
     </div>
     <!-- 表格 -->
     <div class="table">
-      <el-table :data="tableData" style="width: 100%" height="250">
+      <el-table
+        ref="multipleTableRef"
+        @selection-change="handleSelectionChange"
+       :data="tableData" 
+       style="width: 100%" 
+       height="250" 
+       border>
         <el-table-column fixed prop="date" label="Date" width="150" />
         <el-table-column prop="name" label="Name" width="120" />
         <el-table-column prop="state" label="State" width="120" />
@@ -105,11 +118,21 @@ const tableData = ref([
 </template>
 
 <style scoped>
-.table_wrap{
+.table_wrap {
   width: 800px;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  text-align: center;
+}
+
+.fn {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 </style>
