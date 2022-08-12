@@ -1,6 +1,7 @@
 <script setup>
 import { getCurrentInstance, ref, toRefs } from "vue";
 import { Search } from "@element-plus/icons-vue";
+import request from "./utils/api.js"
 
 // 模糊搜索数据
 let queryName = ref("");
@@ -21,41 +22,7 @@ const form = ref({
   address: "",
 });
 
-const tableData = ref([
-  {
-    id: 1,
-    nickName: "Tom",
-    email: "tom@163.com",
-    phone: "18147474545",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    id: 2,
-    nickName: "Jerry",
-    email: "jerry@qq.com",
-    phone: "15123235656",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    id: 3,
-    nickName: "Lucy",
-    email: "lucy@gmail.com",
-    phone: "13589897474",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    nickName: "Jet",
-    email: "imjet@gmail.com",
-    phone: "13145458989",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    nickName: "Kobe",
-    email: "kobe@126.com",
-    phone: "13356569898",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-]);
+const tableData = ref([]);
 
 //勾选
 const handleSelectionChange = (val) => {
@@ -113,6 +80,17 @@ const cancelSelection = () => {
 const handlerQueryName = (val) => {
   console.log('query by name', val)
 };
+
+const pageUserData = async (pageNum = 1) => {
+  let res = await request.get('/user', {
+    pageNum: pageNum,
+    pageSize : 10
+  })
+  console.log(res)
+  tableData.value = res.list
+}
+
+pageUserData()
 
 </script>
 
